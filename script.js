@@ -6,7 +6,7 @@ const loadingScreen = document.getElementById("loading-screen");
  * PENTING: Ganti URL di bawah ini dengan URL Publik dari Railway Anda
  * Contoh: https://database-production.up.railway.app/api/hitung
  */
-const API_URL = "https://databaselaptop.vercel.app/"; 
+const API_URL = "https://databaselaptop.vercel.app/api/hitung";
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -103,3 +103,4 @@ form.addEventListener("submit", async (e) => {
     }
 
 });
+
