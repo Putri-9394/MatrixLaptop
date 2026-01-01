@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SPK Laptop Matrix | Rekomendasi SAW</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ================= RESET & BASE ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #1e293b, #3b82f6, #0ea5e9);
+            background-size: 400% 400%;
+            animation: bgMove 12s ease infinite;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        @keyframes bgMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ================= HEADER ================= */
+        header {
+            padding: 2rem;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.8);
+        }
+
+        /* ================= LAYOUT ================= */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto 3rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 2.5rem;
+        }
+
+        /* ================= CARDS (Glassmorphism) ================= */
+        .card, .result-box {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h3, .result-box h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            color: #38bdf8;
+            text-align: center;
+        }
+
+        /* ================= FORM ELEMENTS ================= */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+            opacity: 0.9;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            border: none;
+            outline: none;
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Helper Text untuk Skala */
+        .helper-text {
+            font-size: 0.7rem;
+            color: #cbd5e1;
+            margin-top: 6px;
+            display: block;
+            line-height: 1.4;
+        }
+
+        /* ================= BUTTON ================= */
+        .btn-submit {
+            width: 100%;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border: none;
+            border-radius: 50px;
+            background: #3b82f6;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.4s ease;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-submit:hover {
+            background: #60a5fa;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.5);
+        }
+
+        /* ================= LOADING & RESULTS ================= */
+        #loading-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .loader {
+            width: 35px;
+            height: 35px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .rank-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1.2rem;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        .rank-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+        }
+
+        .top-rank {
+            border-color: #fbbf24;
+            background: rgba(251, 191, 36, 0.1) !important;
+        }
+
+        .score {
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>⚙️ LaptopMatrix SPK</header>
+
+    <div class="container">
+        <aside>
+            <form id="form-kriteria" class="card">
+                <h3>Kriteria Preferensi</h3>
+
+                <div class="form-group">
+                    <label for="harga">Budget Maksimal (Rp)</label>
+                    <input type="number" id="harga" placeholder="Contoh: 12000000" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ram">Minimal RAM (GB)</label>
+                    <input type="number" id="ram" placeholder="Contoh: 8" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ssd">Minimal Penyimpanan (GB)</label>
+                    <input type="number" id="ssd" placeholder="Contoh: 256" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="prosesor">Kebutuhan Prosesor (Skala 1-5)</label>
+                    <input type="number" id="prosesor" min="1" max="5" value="3" required>
+                    <span class="helper-text">1: Office/Browsing | 3: Desain/i5 | 5: Render/i9</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="gpu">Kebutuhan Grafis (Skala 1-5)</label>
+                    <input type="number" id="gpu" min="1" max="5" value="3" required>
+                    <span class="helper-text">1: Standar | 3: Desain Grafis | 5: Gaming/RTX</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="berat">Berat Maksimal (kg)</label>
+                    <input type="number" step="0.1" id="berat" placeholder="Contoh: 1.6" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Cari Rekomendasi</button>
+
+                <div id="loading-screen">
+                    <div class="loader"></div>
+                    <span style="font-size: 0.8rem; opacity: 0.8;">Menganalisis Data di Railway...</span>
+                </div>
+            </form>
+        </aside>
+
+        <main id="hasil-ranking" class="result-box">
+            <h2>Hasil Rekomendasi</h2>
+            <div id="placeholder-text" style="text-align: center; margin-top: 2rem;">
+                <p style="opacity: 0.6; font-style: italic;">Silakan masukkan kriteria Anda dan tekan tombol cari untuk melihat hasil ranking berdasarkan metode SAW.</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

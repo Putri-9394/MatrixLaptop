@@ -1,0 +1,335 @@
+/* --- Global --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0a192f, #1e3c72);
+  color: #f4f4f9;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* --- Welcome Page --- */
+.welcome-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  background: linear-gradient(135deg, #3a0ca3, #4361ee);
+}
+
+.welcome-container {
+  animation: fadeInUp 1.5s ease;
+}
+
+.welcome-container h1 {
+  font-size: 2.2em;
+  margin-top: 15px;
+}
+
+.welcome-container span {
+  color: #ffd60a;
+}
+
+.btn-start {
+  margin-top: 25px;
+  background: #ffd60a;
+  color: #222;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.btn-start:hover {
+  background: #ffc300;
+  transform: scale(1.05);
+}
+
+/* --- Loading Transition --- */
+.loading-screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(10, 25, 47, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s;
+  z-index: 1000;
+}
+
+.loader {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #f4f4f9;
+  border-top: 6px solid #ffd60a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.hidden { display: none; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --- Main Page --- */
+.navbar {
+  background: #14213d;
+  padding: 15px 20px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.card {
+  background: #1b263b;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  width: 100%;
+  max-width: 500px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #e5e5e5;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background: #ffd60a;
+  color: #222;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05em;
+  transition: 0.3s;
+}
+
+.btn-submit:hover {
+  background: #ffc300;
+  transform: scale(1.03);
+}
+
+.result-box {
+  margin-top: 25px;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* --- Animations --- */
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeInUp {
+  from {opacity: 0; transform: translateY(30px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+ /* Animasi Loading Screen */
+#loading-screen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #141E30, #243B55);
+  color: white;
+  font-size: 1.4em;
+  font-family: 'Poppins', sans-serif;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+#loading-screen.active {
+  display: flex;
+}
+.loader {
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  border-top: 5px solid #00C6FF;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-top: 20px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Kartu laptop */
+.laptop-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.laptop-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.fade-in {
+  opacity: 0;
+  animation: fadeInCard 0.5s forwards;
+}
+@keyframes fadeInCard {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.error-box {
+  background: #ffd6d6;
+  color: #a30000;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+.no-result {
+  text-align: center;
+  color: #555;
+}
+.no-result img {
+  width: 150px;
+  margin-top: 20px;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #4f46e5, #9333ea);
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 30px;
+  border-radius: 20px;
+  width: 350px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+}
+
+.btn-submit {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #22c55e;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-submit:hover { background-color: #16a34a; }
+
+#loading-screen {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  padding: 20px;
+}
+
+.loader {
+  border: 6px solid #ddd;
+  border-top: 6px solid #22c55e;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+.result-card {
+  margin-top: 25px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 15px;
+  text-align: left;
+}
+
+.ranking-list {
+  list-style: none;
+  padding: 0;
+}
+.rank-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+.rank-item.top {
+  background: #22c55e;
+  color: white;
+  font-weight: bold;
+}
+.score {
+  color: #ffeb3b;
+}
+.no-result {
+  text-align: center;
+  color: #fbbf24;
+}
+.no-result img {
+  width: 150px;
+  margin-top: 20px;
+}
