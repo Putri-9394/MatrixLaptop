@@ -2,47 +2,44 @@ const form = document.getElementById("form-kriteria");
 const hasilDiv = document.getElementById("hasil-ranking");
 const loadingScreen = document.getElementById("loading-screen");
 
-/**
- * PENTING: Ganti URL di bawah ini dengan URL Publik dari Railway Anda
- * Contoh: https://database-production.up.railway.app/api/hitung
- */
+// Pastikan URL ini sesuai dengan URL Vercel kamu
 const API_URL = "https://databaselaptop.vercel.app/api/hitung";
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // 1. Ambil nilai input dari user
+    // 1. Ambil nilai input dan pastikan tipe datanya Float
     const w_harga = parseFloat(document.getElementById("harga").value);
     const w_ram = parseFloat(document.getElementById("ram").value);
     const w_ssd = parseFloat(document.getElementById("ssd").value);
-    const w_prosesor = parseFloat(document.getElementById("prosesor").value) || 1;
-    const w_gpu = parseFloat(document.getElementById("gpu").value) || 1;
+    const w_prosesor = parseFloat(document.getElementById("prosesor").value);
+    const w_gpu = parseFloat(document.getElementById("gpu").value);
     const w_berat = parseFloat(document.getElementById("berat").value);
 
-    // Validasi sederhana
-    if (!w_harga || !w_ram || !w_ssd || !w_berat) {
-        alert("⚠️ Tolong isi semua kriteria dengan benar!");
+    // 2. Validasi ketat: Jangan biarkan ada nilai kosong atau NaN
+    if ([w_harga, w_ram, w_ssd, w_prosesor, w_gpu, w_berat].some(isNaN)) {
+        alert("⚠️ Semua kriteria harus diisi dengan angka!");
         return;
     }
 
-    // 2. Tampilkan animasi loading
+    // Tampilkan animasi loading
     loadingScreen.style.display = "flex";
-    hasilDiv.innerHTML = `<p style="text-align:center; opacity:0.7;">Sedang menghitung rekomendasi...</p>`;
+    hasilDiv.innerHTML = `<p style="text-align:center; opacity:0.7;">Sedang menghitung peringkat...</p>`;
 
     try {
-        // 3. Kirim data ke Backend Railway
+        // 3. Kirim data ke Backend (Nama Key harus sesuai dengan required_keys di Python)
         const response = await fetch(API_URL, {
             method: "POST",
             headers: { 
                 "Content-Type": "application/json" 
             },
             body: JSON.stringify({
-                w_harga,
-                w_ram,
-                w_prosesor,
-                w_gpu,
-                w_ssd,
-                w_berat
+                "w_harga": w_harga,
+                "w_ram": w_ram,
+                "w_prosesor": w_prosesor,
+                "w_gpu": w_gpu,
+                "w_ssd": w_ssd,
+                "w_berat": w_berat
             }),
         });
 
@@ -53,54 +50,48 @@ form.addEventListener("submit", async (e) => {
             // 4. Render Hasil Ranking
             let html = `
                 <div class="result-card">
-                    <h2 style="margin-bottom: 10px;">📊 Hasil Ranking Laptop</h2>
-                    <p style="margin-bottom: 20px; font-size: 0.9rem; opacity: 0.8;">
-                        Urutan berdasarkan perhitungan metode SAW (Simple Additive Weighting):
-                    </p>
+                    <h2 style="margin-bottom: 15px;">📊 Rekomendasi Laptop (SAW)</h2>
                     <div class="ranking-list">
             `;
 
-            data.hasil.forEach((item, index) => {
-                // Menentukan kelas khusus untuk peringkat 1
-                const isFirst = index === 0 ? "top-rank" : "";
-                const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}.`;
-
-                html += `
-                    <div class="rank-item ${isFirst}" style="
-                        display: flex; 
-                        justify-content: space-between; 
-                        align-items: center; 
-                        background: rgba(255,255,255,0.1); 
-                        padding: 15px; 
-                        margin-bottom: 10px; 
-                        border-radius: 12px;
-                        border-left: 5px solid ${index === 0 ? '#38bdf8' : 'transparent'};
-                    ">
-                        <span>${medal} <b>${item.nama_laptop}</b></span>
-                        <span class="score" style="font-weight: bold; color: #38bdf8;">
-                            ${parseFloat(item.skor).toFixed(4)}
-                        </span>
-                    </div>`;
-            });
+            if (data.hasil.length === 0) {
+                html += `<p>Tidak ada data laptop untuk dihitung.</p>`;
+            } else {
+                data.hasil.forEach((item, index) => {
+                    const isFirst = index === 0 ? "top-rank" : "";
+                    const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}.`;
+                    
+                    html += `
+                        <div class="rank-item ${isFirst}" style="
+                            display: flex; 
+                            justify-content: space-between; 
+                            background: rgba(255,255,255,0.05); 
+                            padding: 15px; 
+                            margin-bottom: 8px; 
+                            border-radius: 8px;
+                            border-left: 4px solid ${index === 0 ? '#38bdf8' : 'transparent'};
+                        ">
+                            <span>${medal} <b>${item.nama_laptop}</b></span>
+                            <span style="font-weight: bold; color: #38bdf8;">${item.skor}</span>
+                        </div>`;
+                });
+            }
 
             html += "</div></div>";
             hasilDiv.innerHTML = html;
         } else {
-            hasilDiv.innerHTML = `<div class="error-box" style="color: #ff4d4d;">❌ Error: ${data.message}</div>`;
+            // Jika backend mengirim error (Misal: Database Kosong atau Koneksi Gagal)
+            hasilDiv.innerHTML = `<div class="error-box" style="color:#ff4d4d; background:rgba(255,0,0,0.1); padding:15px; border-radius:8px;">
+                ❌ Error: ${data.message}
+            </div>`;
         }
 
     } catch (err) {
         loadingScreen.style.display = "none";
         hasilDiv.innerHTML = `
             <div class="error-box" style="padding: 20px; background: rgba(255,0,0,0.1); border-radius: 10px;">
-                <p style="color: #ff4d4d; font-weight: bold;">⚠️ Gagal terhubung ke API</p>
-                <p style="font-size: 0.8rem; margin-top: 5px;">
-                    Pastikan server Backend di Railway sudah aktif dan link API_URL sudah benar.<br>
-                    Detail: ${err.message}
-                </p>
-            </div>
-        `;
+                <p style="color: #ff4d4d; font-weight: bold;">⚠️ Gagal Menghubungkan ke API</p>
+                <p style="font-size: 0.8rem; margin-top: 5px;">${err.message}</p>
+            </div>`;
     }
-
 });
-
